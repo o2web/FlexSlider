@@ -4,7 +4,7 @@ Community made patches, localisations, bug reports and contributions are always 
 
 When contributing, please ensure you follow the guidelines below so that we can keep on top of things.
 
-__Note:__ 
+__Note:__
 
 GitHub is for *bug reports and contributions only* - if you have a setup question, please be mindful of this and keep your question clear and concise, if you must post it to this repository.
 
