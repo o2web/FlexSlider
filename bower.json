@@ -3,7 +3,8 @@
   "version": "2.5.0",
   "homepage": "https://github.com/woothemes/FlexSlider",
   "authors": [
-    "WooThemes <jeff@woothemes.com>"
+    "WooThemes <jeff@woothemes.com>",
+    "O2 Web <cthibault@o2web.ca>"
   ],
   "description": "An awesome, fully responsive jQuery slider toolkit.",
   "main": [

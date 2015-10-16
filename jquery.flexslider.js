@@ -1,8 +1,11 @@
-/*
- * jQuery FlexSlider v2.5.0
- * Copyright 2012 WooThemes
- * Contributing Author: Tyler Smith
- */
+//
+// jQuery FlexSlider v2.5.1
+// Copyright 2012 WooThemes
+// Contributing Author: Tyler Smith
+
+// Custom build by O2 Web
+// o2web.ca
+
 ;
 (function ($) {
 
@@ -754,7 +757,7 @@
               slider.animating = false;
               slider.currentSlide = slider.animatingTo;
             }
-            
+
             // Unbind previous transitionEnd events and re-bind new transitionEnd event
             slider.container.unbind("webkitTransitionEnd transitionend");
             slider.container.bind("webkitTransitionEnd transitionend", function() {
@@ -930,7 +933,7 @@
             slider.doMath();
             slider.viewport.height(slider.h);
             slider.setProps(sliderOffset * slider.h, "init");
-          }, (type === "init") ? 100 : 0);
+          }, 0);
         } else {
           slider.container.width((slider.count + slider.cloneCount) * 200 + "%");
           slider.setProps(sliderOffset * slider.computedW, "init");
@@ -939,7 +942,7 @@
             slider.newSlides.css({"width": slider.computedW, "float": "left", "display": "block"});
             // SMOOTH HEIGHT:
             if (slider.vars.smoothHeight) { methods.smoothHeight(); }
-          }, (type === "init") ? 100 : 0);
+          }, 0);
         }
       } else { // FADE:
         slider.slides.css({"width": "100%", "float": "left", "marginRight": "-100%", "position": "relative"});
@@ -1080,6 +1083,29 @@
       slider.vars.removed(slider);
     };
 
+
+
+    slider.destroy = function() {
+      var classNamespace = '.' + slider.vars.namespace; // Namespaced class selector
+      if (slider.vars.controlNav) slider.controlNav.closest(classNamespace + 'control-nav').remove(); // Remove control elements if present
+      if (slider.vars.directionNav) slider.directionNav.closest(classNamespace + 'direction-nav').remove(); // Remove direction-nav elements if present
+      if (slider.vars.pausePlay) slider.pausePlay.closest(classNamespace + 'pauseplay').remove(); // Remove pauseplay elements if present
+      slider.find('.clone').remove(); // Remove any flexslider clones
+      slider.unbind(slider.vars.eventNamespace); // Remove events on slider
+      if ( slider.vars.animation != "fade" ) slider.container.unwrap(); // Remove the .flex-viewport div
+      slider.container.unbind(slider.vars.eventNamespace); // Remove events on slider
+      slider.slides.filter(classNamespace + 'active-slide').removeClass(slider.vars.namespace + 'active-slide'); // Remove slide active class
+      slider.slides.unbind(slider.vars.eventNamespace); // Remove events on slides
+      $(document).unbind(slider.vars.eventNamespace + "-" + slider.id); // Remove events from document for this instance only
+      $(window).unbind(slider.vars.eventNamespace + "-" + slider.id); // Remove events from window for this instance only 
+      $(window).unbind("resize orientationchange focus", methods.resize);
+      slider.container.removeAttr('style') // Remove generated CSS (could collide with 3rd parties)
+      slider.slides.removeAttr('style'); // Remove generated CSS (could collide with 3rd parties)
+      slider.stop(); // Stop the interval
+      slider.removeData('flexslider'); // Remove data
+    }
+
+
     //FlexSlider: Initialize
     methods.init();
   };
@@ -1113,7 +1139,7 @@
     // Usability features
     pauseOnAction: true,            //Boolean: Pause the slideshow when interacting with control elements, highly recommended.
     pauseOnHover: false,            //Boolean: Pause the slideshow when hovering over slider, then resume when no longer hovering
-    pauseInvisible: true,   		//{NEW} Boolean: Pause the slideshow when tab is invisible, resume when visible. Provides better UX, lower CPU usage.
+    pauseInvisible: true,       //{NEW} Boolean: Pause the slideshow when tab is invisible, resume when visible. Provides better UX, lower CPU usage.
     useCSS: true,                   //{NEW} Boolean: Slider will use CSS3 transitions if available
     touch: true,                    //{NEW} Boolean: Allow touch swipe navigation of the slider on touch-enabled devices
     video: false,                   //{NEW} Boolean: If using video in the slider, will prevent CSS3 3D Transforms to avoid graphical glitches
@@ -1184,6 +1210,7 @@
         case "next": $slider.flexAnimate($slider.getTarget("next"), true); break;
         case "prev":
         case "previous": $slider.flexAnimate($slider.getTarget("prev"), true); break;
+        case "destroy": $slider.destroy(); break;
         default: if (typeof options === "number") { $slider.flexAnimate(options, true); }
       }
     }
